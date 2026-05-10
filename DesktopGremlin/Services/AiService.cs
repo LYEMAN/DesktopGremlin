@@ -14,7 +14,13 @@ namespace DesktopGremlin.Services
         {
             var resp = await _http.PostAsJsonAsync("/ai/chat", new { message });
             resp.EnsureSuccessStatusCode();
-            return await resp.Content.ReadAsStringAsync();
+            var result = await resp.Content.ReadFromJsonAsync<ChatApiResponse>();
+            return result?.Reply;
+        }
+
+        private class ChatApiResponse
+        {
+            public string? Reply { get; set; }
         }
     }
 }
