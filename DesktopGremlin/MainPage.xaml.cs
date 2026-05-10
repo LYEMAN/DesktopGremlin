@@ -1,4 +1,4 @@
-﻿namespace DesktopGremlin
+namespace DesktopGremlin
 {
     public partial class MainPage : ContentPage
     {
@@ -11,13 +11,17 @@
             BindingContext = vm;
         }
 
-        private async void OnSendClicked(object sender, EventArgs e)
+        private async void OnSendClicked(object? sender, EventArgs e)
         {
-            await vm.SendMessage(UserInput.Text);
+            if (string.IsNullOrWhiteSpace(UserInput.Text)) return;
+
+            var userText = UserInput.Text;
+            UserInput.Text = string.Empty;
+
+            MessagesContainer.Children.Add(new Label { Text = "You: " + userText });
+
+            var reply = await vm.SendMessage(userText);
+            MessagesContainer.Children.Add(new Label { Text = "Gremlin: " + reply });
         }
-
-
-
-
     }
 }
