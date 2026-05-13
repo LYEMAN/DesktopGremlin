@@ -15,13 +15,52 @@ namespace DesktopGremlin
         {
             if (string.IsNullOrWhiteSpace(UserInput.Text)) return;
 
-            var userText = UserInput.Text;
+            var parsed = Services.InputParser.Parse(UserInput.Text);
             UserInput.Text = string.Empty;
 
-            MessagesContainer.Children.Add(new Label { Text = "You: " + userText });
+            switch (parsed.Type)
+            {
+                case Services.InputType.Empty:
+                    return;
 
-            var reply = await vm.SendMessage(userText);
-            MessagesContainer.Children.Add(new Label { Text = "Gremlin: " + reply });
+                case Services.InputType.Command:
+                    HandleCommand(parsed.Command);
+                    return;
+
+                case Services.InputType.Message:
+                    MessagesContainer.Children.Add(new Label { Text = "You: " + parsed.Message });
+                    var reply = await vm.SendMessage(parsed.Message);
+                    MessagesContainer.Children.Add(new Label { Text = "Gremlin: " + reply });
+                    break;
+            }
+        }
+
+        private void HandleCommand(string command)
+        {
+            switch (command)
+            {
+                case "help":
+                    MessagesContainer.Children.Add(new Label
+                    {
+                        Text = "Gremlin: Commands: /help, /clear, /quit"
+                    });
+                    break;
+
+                case "clear":
+                    MessagesContainer.Children.Clear();
+                    break;
+
+                case "quit":
+                    Application.Current?.Quit();
+                    break;
+
+                default:
+                    MessagesContainer.Children.Add(new Label
+                    {
+                        Text = "Gremlin: Unknown command. Type /help for a list."
+                    });
+                    break;
+            }
         }
     }
 }
