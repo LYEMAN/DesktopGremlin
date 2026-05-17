@@ -4,14 +4,19 @@
              x:Class="DesktopGremlin.MainPage"
              BackgroundColor="Transparent"  
               IsVisible="True"  
-             Opacity="0"
+             Opacity="1"
              >
-    <VerticalStackLayout Padding="20">
+    <VerticalStackLayout Padding="5">
+        <Image x:Name="BotImage" Source="neutral.png" VerticalOptions="Center" />
 
-        <Entry x:Name="UserInput" Placeholder="Type a message..." />
+        <ScrollView VerticalOptions="FillAndExpand">
+            <VerticalStackLayout x:Name="MessagesContainer" />
+        </ScrollView>
 
-        <Button Text="Send"
-                Clicked="OnSendClicked" />
+        <HorizontalStackLayout Spacing="8">
+            <Entry x:Name="UserInput" Placeholder="Type a message..." HorizontalOptions="FillAndExpand" />
+            <Button Text="Send" Clicked="OnSendClicked" />
+        </HorizontalStackLayout>
 
     </VerticalStackLayout>
 

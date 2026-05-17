@@ -9,6 +9,21 @@ namespace DesktopGremlin
             InitializeComponent();
             vm = viewModel;
             BindingContext = vm;
+            // subscribe to fact poller event
+            try
+            {
+                var poller = App.Current?.Handler?.MauiContext?.Services.GetService(typeof(DesktopGremlin.Services.FactPoller)) as DesktopGremlin.Services.FactPoller;
+                if (poller != null)
+                {
+                    poller.FactReceived += (s, fact) =>
+                    {
+                        Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() =>
+                            MessagesContainer.Children.Add(new Label { Text = "BMO: " + fact })
+                        );
+                    };
+                }
+            }
+            catch { }
         }
 
         private async void OnSendClicked(object? sender, EventArgs e)
@@ -30,7 +45,7 @@ namespace DesktopGremlin
                 case Services.InputType.Message:
                     MessagesContainer.Children.Add(new Label { Text = "You: " + parsed.Message });
                     var reply = await vm.SendMessage(parsed.Message);
-                    MessagesContainer.Children.Add(new Label { Text = "Gremlin: " + reply });
+                    MessagesContainer.Children.Add(new Label { Text = "BMO: " + reply });
                     break;
             }
         }
