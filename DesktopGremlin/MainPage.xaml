@@ -1,37 +1,82 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DesktopGremlin.MainPage"
-             BackgroundColor="#6dae9b"  
-              IsVisible="True"  
-             Opacity="1"
-             >
-    <VerticalStackLayout Padding="5">
-        <Image x:Name="BotImage" Source="{Binding BotImage}" VerticalOptions="Center" />
+             BackgroundColor="#6dae9b">
 
-        <Frame x:Name="MessagesFrame" BorderColor="Gray" BackgroundColor="#152d25" Padding="4" CornerRadius="6" HeightRequest="45">
+    <Grid Padding="5"
+          RowDefinitions="*,Auto,Auto"
+          RowSpacing="10">
+
+        <Image Grid.Row="0"
+               x:Name="BotImage"
+               Source="{Binding BotImage}"
+               Aspect="AspectFit"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+        <Frame Grid.Row="1"
+               x:Name="MessagesFrame"
+               BorderColor="Gray"
+               BackgroundColor="#152d25"
+               Padding="4"
+               CornerRadius="6"
+               MinimumHeightRequest="45">
+
             <Frame.Resources>
                 <Style TargetType="Label">
                     <Setter Property="FontSize" Value="11" />
+                    <Setter Property="TextColor" Value="White" />
                 </Style>
             </Frame.Resources>
-            <VerticalStackLayout>
-                <Label x:Name="LatestMessageLabel" Text="No messages" FontAttributes="Bold">
+
+            <VerticalStackLayout Spacing="4">
+
+                <Label x:Name="LatestMessageLabel"
+                       Text="No messages"
+                       FontAttributes="Bold"
+                       LineBreakMode="WordWrap">
+
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnLatestMessageTapped" />
                     </Label.GestureRecognizers>
+
                 </Label>
-                <ScrollView x:Name="MessagesPanel" IsVisible="False" HeightRequest="150" VerticalOptions="Start">
+
+                <ScrollView x:Name="MessagesPanel"
+                            IsVisible="False"
+                            HeightRequest="150">
+
                     <VerticalStackLayout x:Name="MessagesContainer" />
+
                 </ScrollView>
+
             </VerticalStackLayout>
+
         </Frame>
 
-        <HorizontalStackLayout Spacing="8" >
-            <Entry x:Name="UserInput" Placeholder="Type a message..." HorizontalOptions="Center"  />
-            <Button Text="Send" BackgroundColor="#0c039e" TextColor="White" Clicked="OnSendClicked" />
-        </HorizontalStackLayout>
+        <Grid Grid.Row="2"
+              ColumnDefinitions="*,Auto"
+              ColumnSpacing="8"
+              Margin="0,0,0,8">
 
-    </VerticalStackLayout>
+            <Entry Grid.Column="0"
+                   x:Name="UserInput"
+                   Placeholder="Type a message..."
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Center"
+                   ClearButtonVisibility="WhileEditing" />
+
+            <Button Grid.Column="1"
+                    Text="Send"
+                    BackgroundColor="#0c039e"
+                    TextColor="White"
+                    VerticalOptions="Center"
+                    Clicked="OnSendClicked" />
+
+        </Grid>
+
+    </Grid>
 
 </ContentPage>
