@@ -84,6 +84,11 @@ namespace DesktopGremlin
             }
         }
 
+        private void OnUserInputCompleted(object sender, EventArgs e)
+        {
+            OnSendClicked(sender, e);
+        }
+
         private void HandleCommand(string command)
         {
             switch (command)
