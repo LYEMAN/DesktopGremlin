@@ -2,16 +2,35 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DesktopGremlin.MainPage"
-             BackgroundColor="Transparent"  
+             BackgroundColor="#6dae9b"  
               IsVisible="True"  
-             Opacity="0"
+             Opacity="1"
              >
-    <VerticalStackLayout Padding="20">
+    <VerticalStackLayout Padding="5">
+        <Image x:Name="BotImage" Source="{Binding BotImage}" VerticalOptions="Center" />
 
-        <Entry x:Name="UserInput" Placeholder="Type a message..." />
+        <Frame x:Name="MessagesFrame" BorderColor="Gray" BackgroundColor="#152d25" Padding="4" CornerRadius="6" HeightRequest="45">
+            <Frame.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="FontSize" Value="11" />
+                </Style>
+            </Frame.Resources>
+            <VerticalStackLayout>
+                <Label x:Name="LatestMessageLabel" Text="No messages" FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLatestMessageTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <ScrollView x:Name="MessagesPanel" IsVisible="False" HeightRequest="150" VerticalOptions="Start">
+                    <VerticalStackLayout x:Name="MessagesContainer" />
+                </ScrollView>
+            </VerticalStackLayout>
+        </Frame>
 
-        <Button Text="Send"
-                Clicked="OnSendClicked" />
+        <HorizontalStackLayout Spacing="8" >
+            <Entry x:Name="UserInput" Placeholder="Type a message..." HorizontalOptions="Center"  />
+            <Button Text="Send" BackgroundColor="#0c039e" TextColor="White" Clicked="OnSendClicked" />
+        </HorizontalStackLayout>
 
     </VerticalStackLayout>
 

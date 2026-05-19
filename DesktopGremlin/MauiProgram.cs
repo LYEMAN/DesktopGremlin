@@ -20,6 +20,9 @@ namespace DesktopGremlin
             // register AI service and ChatViewModel for DI
             builder.Services.AddSingleton<DesktopGremlin.Services.AiService>();
             builder.Services.AddSingleton<DesktopGremlin.ChatViewModel>();
+            // register fact services
+            builder.Services.AddSingleton<DesktopGremlin.Services.FactService>();
+            builder.Services.AddSingleton<DesktopGremlin.Services.FactPoller>();
 
 #if WINDOWS
             // Windows-specific window size / resize behavior
@@ -86,7 +89,17 @@ namespace DesktopGremlin
             builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+
+            // start background fact poller
+            try
+            {
+                var poller = app.Services.GetService<DesktopGremlin.Services.FactPoller>();
+                poller?.Start();
+            }
+            catch { }
+
+            return app;
         }
     }
 }
